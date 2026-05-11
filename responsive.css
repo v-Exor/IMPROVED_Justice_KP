@@ -1,0 +1,67 @@
+/* ============================================================
+   JUSTICE-KP — responsive.css
+   Media queries for tablet and mobile
+   ============================================================ */
+
+/* ── Large Tablet (≤1200px) ── */
+@media (max-width: 1200px) {
+  .stats-grid      { grid-template-columns: repeat(2,1fr); }
+  .panels-grid     { grid-template-columns: repeat(2,1fr); }
+  .dashboard-grid  { grid-template-columns: 1fr; }
+  .ner-cards       { grid-template-columns: 1fr; }
+  .completion-metrics { grid-template-columns: repeat(2,1fr); }
+  .kp-forms-grid   { grid-template-columns: repeat(2,1fr); }
+}
+
+/* ── Tablet (≤900px) ── */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+    z-index: 200;
+    box-shadow: 4px 0 40px rgba(0,0,0,0.6);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .sidebar-overlay.show { opacity: 1; pointer-events: all; }
+
+  .main-content  { margin-left: 0; }
+  .topnav-hamburger { display: flex; }
+
+  .consent-layout    { grid-template-columns: 1fr; }
+  .transcription-layout { grid-template-columns: 1fr; }
+  .hearing-layout    { grid-template-columns: 1fr; }
+  .hearing-rec-layout { grid-template-columns: 1fr; }
+  .preproc-layout    { grid-template-columns: 1fr; }
+  .symbolic-layout   { grid-template-columns: 1fr; }
+  .decision-cards    { grid-template-columns: 1fr; }
+  .mediation-options { grid-template-columns: 1fr; }
+  .kp-forms-grid     { grid-template-columns: 1fr; }
+  .completion-metrics { grid-template-columns: repeat(2,1fr); }
+  .routing-flow      { gap: 0; }
+}
+
+/* ── Mobile (≤600px) ── */
+@media (max-width: 600px) {
+  .page-content { padding: 16px; }
+  .topnav { padding: 0 16px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .panels-grid { grid-template-columns: 1fr; }
+  .panel-title { font-size: 1.3rem; }
+  .panel-header { flex-direction: column; gap: 12px; }
+  .time-slots { grid-template-columns: repeat(2,1fr); }
+  .completion-metrics { grid-template-columns: 1fr 1fr; }
+  .rule-stats { grid-template-columns: 1fr 1fr; }
+  .rec-controls { flex-wrap: wrap; }
+  .topnav-actions .topnav-btn span { display: none; }
+  .cal-day { padding: 5px 2px; font-size: 0.78rem; }
+}

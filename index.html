@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUSTICE-KP — Secure Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0C0F;--bg-d:#111318;--bg-c:#161A22;
+  --bd:rgba(255,255,255,0.07);--bdb:rgba(47,128,237,0.35);
+  --blue:#2F80ED;--bacc:#56CCF2;--bdim:rgba(47,128,237,0.12);
+  --green:#27AE60;--red:#EB5757;--orange:#F2994A;
+  --white:#F5F7FA;--mt:rgba(245,247,250,0.5);--dim:rgba(245,247,250,0.28);
+  --rm:12px;--rl:20px;--fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --tr:all .28s cubic-bezier(.4,0,.2,1);
+}
+html{font-size:16px}
+body{font-family:var(--fb);background:var(--bg);color:var(--white);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+button{font-family:var(--fb);cursor:pointer;border:none;outline:none}
+input{font-family:var(--fb)}
+/* Layout */
+.root{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+/* Left */
+.left{position:relative;background:linear-gradient(145deg,#0D1117 0%,#111827 50%,#0A0F1C 100%);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  padding:60px 64px;overflow:hidden;z-index:1}
+.left::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 20% 50%,rgba(47,128,237,.13) 0%,transparent 70%);pointer-events:none}
+#pc{position:absolute;inset:0;z-index:0;pointer-events:none}
+@keyframes bf{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(18px,-14px) scale(1.04)}66%{transform:translate(-12px,9px) scale(.97)}}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:bf 12s ease-in-out infinite}
+.brand{position:relative;z-index:2}
+.lw{display:flex;align-items:center;gap:14px;margin-bottom:44px}
+.li{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--bacc));
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 24px rgba(47,128,237,.4)}
+.lt{font-family:var(--fd);font-size:1.4rem;font-weight:800;letter-spacing:.04em}
+.lt span{color:var(--bacc)}
+h1{font-family:var(--fd);font-size:clamp(1.9rem,3.2vw,2.85rem);font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:18px}
+h1 .hl{color:var(--bacc)}
+.sub{font-size:.95rem;color:var(--mt);line-height:1.75;max-width:400px;margin-bottom:36px}
+.feats{display:flex;flex-direction:column;gap:12px}
+.fi{display:flex;align-items:center;gap:12px;font-size:.88rem;color:var(--mt)}
+.fic{width:32px;height:32px;border-radius:8px;background:var(--bdim);border:1px solid rgba(47,128,237,.2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem}
+.srow{display:flex;gap:28px;margin-top:44px;padding-top:28px;border-top:1px solid var(--bd)}
+.st{display:flex;flex-direction:column;gap:3px}
+.sn{font-family:var(--fd);font-size:1.45rem;font-weight:700;color:var(--bacc)}
+.sl{font-size:.72rem;color:var(--dim);letter-spacing:.05em}
+/* Right */
+.right{display:flex;align-items:center;justify-content:center;padding:40px;background:var(--bg-d);position:relative;overflow:hidden}
+.right::before{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(47,128,237,.07) 0%,transparent 70%);pointer-events:none}
+.fw{width:100%;max-width:400px}
+.fh{margin-bottom:32px}
+.fh h2{font-family:var(--fd);font-size:1.75rem;font-weight:700;margin-bottom:6px}
+.fh p{color:var(--mt);font-size:.9rem}
+.fg{margin-bottom:20px}
+.fl{display:block;font-size:.76rem;font-weight:600;color:var(--mt);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.fiw{position:relative}
+.inp{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:var(--rm);
+  padding:13px 42px 13px 16px;font-size:.95rem;color:var(--white);transition:var(--tr);outline:none}
+.inp::placeholder{color:var(--dim)}
+.inp:focus{border-color:var(--blue);background:rgba(47,128,237,.05);box-shadow:0 0 0 3px rgba(47,128,237,.12)}
+.iico{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:1rem;cursor:pointer;user-select:none}
+.ferr{font-size:.76rem;color:var(--red);margin-top:5px;display:none}
+.ferr.show{display:block}
+/* Login Button */
+.lbtn{width:100%;padding:14px;font-size:1rem;font-weight:700;font-family:var(--fd);border-radius:var(--rm);
+  background:linear-gradient(135deg,var(--blue) 0%,var(--bacc) 100%);color:#fff;border:none;cursor:pointer;
+  position:relative;overflow:hidden;transition:var(--tr);margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.lbtn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(47,128,237,.45)}
+.lbtn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .5s ease}
+.lbtn:hover::before{left:140%}
+.lbtn.loading .bt{display:none}
+.lbtn .bl{display:none}
+.lbtn.loading .bl{display:flex;align-items:center;gap:8px}
+/* Divider */
+.div{text-align:center;position:relative;margin:22px 0;color:var(--dim);font-size:.8rem}
+.div::before,.div::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--bd)}
+.div::before{left:0}.div::after{right:0}
+/* Demo box */
+.dbox{background:var(--bdim);border:1px solid rgba(47,128,237,.2);border-radius:var(--rm);
+  padding:14px 16px;font-size:.82rem;color:var(--mt);line-height:1.9;cursor:pointer;transition:var(--tr)}
+.dbox:hover{border-color:var(--bdb);background:rgba(47,128,237,.15)}
+.dbox strong{color:var(--bacc)}
+.fnote{margin-top:22px;text-align:center;font-size:.74rem;color:var(--dim);line-height:1.7}
+/* Spinner */
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.sp{border-radius:50%;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;animation:spin .8s linear infinite}
+/* Overlay */
+#ov{position:fixed;inset:0;background:var(--bg);z-index:9000;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:22px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+#ov.on{opacity:1;pointer-events:all}
+.ol{font-family:var(--fd);font-size:2rem;font-weight:800}
+.ol span{color:var(--bacc)}
+.obw{width:240px;height:3px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.ob{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--bacc));border-radius:99px;transition:width .12s linear}
+.os{font-size:.76rem;color:var(--dim);letter-spacing:.09em;text-transform:uppercase}
+/* Toast */
+#tc{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:9999;pointer-events:none}
+.toast{background:var(--bg-c);border:1px solid var(--bdb);border-radius:var(--rm);padding:12px 18px;
+  font-size:.84rem;display:flex;align-items:center;gap:10px;pointer-events:all;
+  animation:su .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.5);min-width:260px}
+.toast.err{border-color:rgba(235,87,87,.4);background:rgba(235,87,87,.09)}
+/* Animations */
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.a1{animation:su .5s ease .05s both}.a2{animation:su .5s ease .15s both}
+.a3{animation:su .5s ease .25s both}.a4{animation:su .5s ease .35s both}.a5{animation:su .5s ease .45s both}
+/* Responsive */
+@media(max-width:860px){.root{grid-template-columns:1fr}.left{display:none}.right{padding:32px 20px}}
+</style>
+</head>
+<body>
+<div class="root">
+  <!-- LEFT BRANDING -->
+  <div class="left">
+    <canvas id="pc"></canvas>
+    <div class="blob" style="width:420px;height:420px;background:radial-gradient(circle,rgba(47,128,237,.11),transparent);top:-100px;left:-100px;animation-duration:14s"></div>
+    <div class="blob" style="width:300px;height:300px;background:radial-gradient(circle,rgba(86,204,242,.07),transparent);bottom:50px;right:-80px;animation-duration:11s;animation-delay:-5s"></div>
+    <div class="brand">
+      <div class="lw a1">
+        <div class="li">⚖️</div>
+        <div class="lt">JUSTICE<span>-KP</span></div>
+      </div>
+      <h1 class="a2">Intelligent Legal<br>Decision Support<br><span class="hl">for Barangay KP</span></h1>
+      <p class="sub a3">Neuro-Symbolic AI for TagLish Speech-to-Text Transcription, Multi-Option Mediation, and Automated Sensitive Case Referrals in Katarungang Pambarangay.</p>
+      <div class="feats a4">
+        <div class="fi"><div class="fic">🎙️</div>TagLish ASR — Whisper + LoRA fine-tuning</div>
+        <div class="fi"><div class="fic">🧠</div>50+ RA 7160 Forward-Chaining Rules</div>
+        <div class="fi"><div class="fic">🔍</div>Explainable AI with full legal reasoning traces</div>
+        <div class="fi"><div class="fic">🛡️</div>Automated VAWC detection &amp; referral</div>
+      </div>
+      <div class="srow a5">
+        <div class="st"><span class="sn">97.2%</span><span class="sl">Form Accuracy</span></div>
+        <div class="st"><span class="sn">4.1m</span><span class="sl">Avg Processing</span></div>
+        <div class="st"><span class="sn">50+</span><span class="sl">Legal Rules</span></div>
+        <div class="st"><span class="sn">100%</span><span class="sl">VAWC Detection</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="right">
+    <div class="fw">
+      <div class="fh">
+        <h2>Secure Access</h2>
+        <p>Access the Barangay Mediation AI System</p>
+      </div>
+      <form id="lf">
+        <div class="fg">
+          <label class="fl">Official Email Address</label>
+          <div class="fiw">
+            <input class="inp" type="email" id="em" placeholder="punongbarangay@lgu.gov.ph" autocomplete="username">
+          </div>
+          <div class="ferr" id="ee">Please enter a valid email address.</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Password</label>
+          <div class="fiw">
+            <input class="inp" type="password" id="pw" placeholder="Enter your password" autocomplete="current-password">
+            <span class="iico" id="eye" onclick="tpw()">👁</span>
+          </div>
+          <div class="ferr" id="pe">Password must be at least 6 characters.</div>
+        </div>
+        <button type="submit" class="lbtn" id="lb">
+          <span class="bt">🔐 &nbsp;Access System</span>
+          <span class="bl"><span class="sp" style="width:18px;height:18px"></span> Authenticating…</span>
+        </button>
+      </form>
+      <div class="div">Demo Credentials</div>
+      <div class="dbox" id="dbox" title="Click to auto-fill">
+        <strong>📧 Email:</strong> admin@justice-kp.lgu.gov.ph<br>
+        <strong>🔑 Password:</strong> justice2024<br>
+        <span style="font-size:.72rem;opacity:.65;margin-top:4px;display:block">💡 Click here to auto-fill credentials</span>
+      </div>
+      <div class="fnote">🔒 Compliant with RA 10173 (Data Privacy Act) &amp; RA 7160<br>LSPU 3rd Year Computer Science Experimental Research</div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="ov">
+  <span class="sp" style="width:44px;height:44px;border-width:3px;margin-bottom:6px"></span>
+  <div class="ol">JUSTICE<span>-KP</span></div>
+  <div class="obw"><div class="ob" id="ob"></div></div>
+  <div class="os" id="os">Initializing AI subsystems…</div>
+</div>
+<div id="tc"></div>
+
+<script>
+/* Particles */
+(function(){
+  const c=document.getElementById('pc'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function sz(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
+  function mp(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.5,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,a:Math.random()*.6+.2};}
+  function init(){sz();pts=[];for(let i=0;i<65;i++)pts.push(mp());}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(86,204,242,${p.a*.35})`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+      if(d<95){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+        ctx.strokeStyle=`rgba(47,128,237,${(1-d/95)*.1})`;ctx.lineWidth=.5;ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);init();draw();
+})();
+
+/* Toggle PW */
+function tpw(){const p=document.getElementById('pw'),e=document.getElementById('eye');p.type=p.type==='password'?'text':'password';e.textContent=p.type==='password'?'👁':'🙈';}
+
+/* Toast */
+function toast(msg,type='info'){
+  const ct=document.getElementById('tc'),t=document.createElement('div');
+  t.className='toast'+(type==='err'?' err':'');
+  t.innerHTML=`<span>${{info:'ℹ️',ok:'✅',err:'❌',warn:'⚠️'}[type]||'ℹ️'}</span><span>${msg}</span>`;
+  ct.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .4s';setTimeout(()=>t.remove(),400);},3200);
+}
+
+/* Auto-fill */
+document.getElementById('dbox').addEventListener('click',()=>{
+  document.getElementById('em').value='admin@justice-kp.lgu.gov.ph';
+  document.getElementById('pw').value='justice2024';
+  toast('Credentials filled — click Access System','info');
+});
+
+/* Login */
+document.getElementById('lf').addEventListener('submit',function(e){
+  e.preventDefault();
+  const em=document.getElementById('em').value.trim();
+  const pw=document.getElementById('pw').value;
+  document.getElementById('ee').classList.remove('show');
+  document.getElementById('pe').classList.remove('show');
+  let ok=true;
+  if(!em||!/\S+@\S+\.\S+/.test(em)){document.getElementById('ee').classList.add('show');ok=false;}
+  if(pw.length<6){document.getElementById('pe').classList.add('show');ok=false;}
+  if(!ok)return;
+  if(em!=='admin@justice-kp.lgu.gov.ph'||pw!=='justice2024'){
+    document.getElementById('ee').textContent='Incorrect email or password.';
+    document.getElementById('ee').classList.add('show');
+    toast('Invalid credentials. Use the demo credentials.','err');
+    return;
+  }
+  document.getElementById('lb').classList.add('loading');
+  const ov=document.getElementById('ov'),bar=document.getElementById('ob'),st=document.getElementById('os');
+  ov.classList.add('on');
+  const steps=['Verifying credentials…','Loading AI engine…','Initializing rule base…','Preparing dashboard…','Access granted ✓'];
+  let pct=0,si=0;
+  const iv=setInterval(()=>{
+    pct+=Math.random()*20+7;if(pct>100)pct=100;
+    bar.style.width=pct+'%';
+    const idx=Math.floor(pct/25);if(idx!==si&&idx<steps.length){si=idx;st.textContent=steps[idx];}
+    if(pct>=100){clearInterval(iv);
+      sessionStorage.setItem('kp_u',JSON.stringify({name:'Punong Barangay Cruz',role:'System Administrator',email:em}));
+      setTimeout(()=>{window.location.href='main_page.html';},600);
+    }
+  },200);
+});
+</script>
+</body>
+</html>

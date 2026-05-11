@@ -1,0 +1,173 @@
+/* ============================================================
+   JUSTICE-KP — animations.css
+   All keyframes and animation classes
+   ============================================================ */
+
+/* ── Fade In ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.anim-fadein { animation: fadeIn 0.5s ease forwards; }
+
+/* ── Slide Up ── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-slideup         { animation: slideUp 0.5s ease forwards; }
+.anim-slideup.delay-1 { animation-delay: 0.1s; opacity:0; }
+.anim-slideup.delay-2 { animation-delay: 0.2s; opacity:0; }
+.anim-slideup.delay-3 { animation-delay: 0.3s; opacity:0; }
+.anim-slideup.delay-4 { animation-delay: 0.4s; opacity:0; }
+.anim-slideup.delay-5 { animation-delay: 0.5s; opacity:0; }
+
+/* ── Slide In Left ── */
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.anim-slideleft { animation: slideLeft 0.45s ease forwards; }
+
+/* ── Scale In ── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.anim-scalein { animation: scaleIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+/* ── Glow Pulse (blue) ── */
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 0 18px rgba(47,128,237,0.2); }
+  50%      { box-shadow: 0 0 40px rgba(47,128,237,0.5); }
+}
+.anim-glowpulse { animation: glowPulse 2.5s ease-in-out infinite; }
+
+/* ── AI Processing Spinner ── */
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spin-ring {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(47,128,237,0.15);
+  border-top-color: var(--blue-primary);
+  animation: spinRing 0.9s linear infinite;
+  flex-shrink: 0;
+}
+.spin-ring-sm {
+  width: 20px; height: 20px;
+  border-width: 2px;
+}
+
+/* ── Waveform bars ── */
+@keyframes wave1 { 0%,100%{height:8px}  50%{height:28px} }
+@keyframes wave2 { 0%,100%{height:14px} 50%{height:40px} }
+@keyframes wave3 { 0%,100%{height:22px} 50%{height:14px} }
+@keyframes wave4 { 0%,100%{height:10px} 50%{height:36px} }
+@keyframes wave5 { 0%,100%{height:18px} 50%{height:24px} }
+
+.waveform-bar { width: 4px; border-radius: 2px; background: var(--blue-primary); transition: var(--transition); }
+.waveform-bar:nth-child(1)  { animation: wave1 0.9s ease-in-out infinite; }
+.waveform-bar:nth-child(2)  { animation: wave2 0.85s ease-in-out infinite 0.1s; }
+.waveform-bar:nth-child(3)  { animation: wave3 1.0s ease-in-out infinite 0.15s; }
+.waveform-bar:nth-child(4)  { animation: wave4 0.8s ease-in-out infinite 0.05s; }
+.waveform-bar:nth-child(5)  { animation: wave5 0.95s ease-in-out infinite 0.2s; }
+.waveform-bar:nth-child(6)  { animation: wave1 0.88s ease-in-out infinite 0.25s; }
+.waveform-bar:nth-child(7)  { animation: wave3 0.92s ease-in-out infinite 0.12s; }
+.waveform-bar:nth-child(8)  { animation: wave2 0.87s ease-in-out infinite 0.08s; }
+.waveform-bar:nth-child(9)  { animation: wave4 0.93s ease-in-out infinite 0.18s; }
+.waveform-bar:nth-child(10) { animation: wave5 0.86s ease-in-out infinite 0.22s; }
+.waveform-bar:nth-child(11) { animation: wave1 0.91s ease-in-out infinite 0.14s; }
+.waveform-bar:nth-child(12) { animation: wave3 0.84s ease-in-out infinite 0.06s; }
+
+/* ── Typing cursor ── */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.typing-cursor::after {
+  content: '|';
+  display: inline-block;
+  color: var(--blue-accent);
+  animation: blink 0.8s step-end infinite;
+  margin-left: 2px;
+}
+
+/* ── Neural Node Pulse ── */
+@keyframes nodePulse {
+  0%,100% { transform: scale(1); opacity:0.8; }
+  50%      { transform: scale(1.18); opacity:1; }
+}
+.neural-node { animation: nodePulse 2s ease-in-out infinite; }
+.neural-node:nth-child(2) { animation-delay: 0.3s; }
+.neural-node:nth-child(3) { animation-delay: 0.6s; }
+.neural-node:nth-child(4) { animation-delay: 0.9s; }
+.neural-node:nth-child(5) { animation-delay: 1.2s; }
+
+/* ── Floating blob ── */
+@keyframes blobFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(20px,-15px) scale(1.05); }
+  66%      { transform: translate(-15px,10px) scale(0.97); }
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: blobFloat 12s ease-in-out infinite;
+}
+
+/* ── Particle float ── */
+@keyframes particleFloat {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-120vh) translateX(var(--px-drift,0px)); opacity: 0; }
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFloat var(--dur, 12s) ease-in infinite var(--delay, 0s);
+}
+
+/* ── Shimmer skeleton ── */
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.8s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Rule fire flash ── */
+@keyframes ruleFlash {
+  0%   { background: rgba(47,128,237,0.25); }
+  100% { background: transparent; }
+}
+.rule-fired { animation: ruleFlash 0.6s ease forwards; }
+
+/* ── Success check draw ── */
+@keyframes checkDraw {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+.check-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkDraw 0.6s ease forwards 0.2s;
+}
+
+/* ── Slide-in panel ── */
+@keyframes panelSlideIn {
+  from { opacity:0; transform:translateX(40px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+.panel-enter { animation: panelSlideIn 0.4s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+/* ── Counter increment ── */
+@keyframes countUp { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+.count-anim { animation: countUp 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
